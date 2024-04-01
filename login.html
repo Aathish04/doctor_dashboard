@@ -50,34 +50,51 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
     <script>
-        function login(){
-        const { Client, Account, ID } = Appwrite;
+        async function login(){
+        const { Client, Account, ID, Databases } = Appwrite;
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
         // Perform validation or any other logic here
         // For demonstration, just log the email and password
         console.log("Email:", email);
         console.log("Password:", password);
+        const Database_ID = "66071664001e1106b8bc"
+        const Hospital_CollectionID = "6608044500387ef00454"
+        const UserInformation_CollectionID = "66079e7c000cd257b449"
+        const Doctor_CollectionID = "660804510032437783a5"
 
         // Init your Web SDK
         const client = new Client();
 
         client
-            .setEndpoint('https://frank-dinosaur-virtually.ngrok-free.app/v1/') // Your Appwrite Endpoint
+            .setEndpoint('https://frank-dinosaur-virtually.ngrok-free.app/v1') // Your Appwrite Endpoint
             .setProject('6606f3f6002f1aec6db8') // Your project ID
             ;
 
         const account = new Account(client);
+        const database = new Databases(client);
+            try
+            {
+            const promise = await account.createEmailPasswordSession("aathish04@gmail.com", "hellohello");
+            console.log(promise); // Success
+            console.log('LOGIN SUCCESS!')
+            localStorage.session=JSON.stringify(promise);
 
-        const promise = account.createEmailPasswordSession(email, password);
-
-        promise.then(function (response) {
-            console.log(response); // Success
-            localStorage.session=JSON.stringify(response);
+            
+            var userId = (JSON.parse(localStorage["session"])["userId"])
+            const promise2 = await database.getDocument(Database_ID, UserInformation_CollectionID, promise.userId);
+            localStorage.userdata = JSON.stringify(promise2)
             window.location.href = "index.html";
-        }, function (error) {
-            console.log(error); // Failure
-        });
+            }
+
+            catch(e)
+            {
+                console.log(e)
+            }
+        
+            
+    
+
     }
     </script>
 </body>

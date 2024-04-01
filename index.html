@@ -16,28 +16,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body onload="getdata()">
+
     <div class="header_dash">
         <div class="loh">
             <i class="fa-solid fa-stethoscope"><span class="clog"><span> m</span>edical <span>c</span>are</span></i>
-          </div>
+        </div>
         <div class="right_area">
             <a href="#" class="logout_btn">Logout</a>
         </div>
     </div>
     <div class="sidebar">
-        
+
         <div class="myprofile-photo">
             <div class="profile">
-              <input type="file" class="my_file" name="" id="">
+                <input type="file" class="my_file" name="" id="">
             </div>
-            <h4>Basem</h4>
-          </div>
-          
-    <a href="index.html"><i class="fa-sharp fa-solid fa-house"></i><span>home</span></a>
-    <a href="myappointment.html"><i class="fa-thin fa-solid fa-calendar-days"></i><span>appiontment</span></a>
-    <a href="patient.html"><i class="fa-solid fa-user"></i><span>patients</span></a>
-    <a href="myprofile.html"><i class="fa-solid fa-hospital-user"></i><span>my profile</span></a>
+            <h4 id="name">Basem</h4>
+        </div>
+
+        <a href="index.html"><i class="fa-sharp fa-solid fa-house"></i><span>home</span></a>
+        <a href="myappointment.html"><i class="fa-thin fa-solid fa-calendar-days"></i><span>appiontment</span></a>
+        <a href="patient.html"><i class="fa-solid fa-user"></i><span>patients</span></a>
+        <a href="myprofile.html"><i class="fa-solid fa-hospital-user"></i><span>my profile</span></a>
     </div>
     <div class="content">
         <div class="sebtn">
@@ -51,7 +52,7 @@
             <a href="myprofile.html">
                 <div class="myprofile">
                     <img src="images/PngItem_1468479.png" alt="">
-                    <p>my profile</p>
+                    <p id="pro">my profile</p>
                 </div>
             </a>
             <a href="myappointment.html">
@@ -70,6 +71,53 @@
             </a>
         </div>
     </div>
+
 </body>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@14.0.0"></script>
+<script>
+    function getdata() {
+        var userId = (JSON.parse(localStorage["session"])["userId"])
+        console.log(userId)
+        const { Client, Account, ID, Databases } = Appwrite;
+        const Database_ID = "66071664001e1106b8bc"
+        const Hospital_CollectionID = "6608044500387ef00454"
+        const UserInformation_CollectionID = "66079e7c000cd257b449"
+        const Doctor_CollectionID = "660804510032437783a5"
+        // Init your Web SDK
+        const client = new Client();
+        const account = new Account(client);
+        const database = new Databases(client);
+        client
+            .setEndpoint('https://frank-dinosaur-virtually.ngrok-free.app/v1') // Your Appwrite Endpoint
+            .setProject('6606f3f6002f1aec6db8') // Your project ID
+            ;
+        console.log(localStorage.userdata)
+
+        var imageElement = document.querySelector('.profile');
+        imageElement.style.backgroundImage = 'url("data:image/jpeg;base64,'  + JSON.parse(localStorage.userdata).Photograph + '")';
+        var nametag = document.getElementById('name');
+        nametag.textContent = JSON.parse(localStorage.userdata).Name;
+
+        var profileDiv = document.querySelector('.myprofile');
+
+// Remove existing img tag
+var existingImg = profileDiv.querySelector('img');
+if (existingImg) {
+    existingImg.remove();
+}
+
+// Create a new img element
+var newImg = document.createElement('img');
+
+// Set the src attribute of the new img element to the base64 data
+newImg.src = 'data:image/jpeg;base64,'  + JSON.parse(localStorage.userdata).Photograph; // Adjust the mime type accordingly if your base64 data represents a different image format
+
+profileDiv.appendChild(newImg);
+
+// Move the "profile" text below the photo
+var profileText = profileDiv.querySelector('p');
+profileDiv.appendChild(profileText);
+    }
+</script>
 
 </html>

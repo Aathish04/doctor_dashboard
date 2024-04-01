@@ -28,11 +28,11 @@
   <div class="sidebar">
     
     <div class="myprofile-photo">
-      <div class="profile">
-        <input type="file" class="my_file" name="" id="">
-      </div>
-      <h4>Basem</h4>
-    </div>
+            <div class="profile">
+                <input type="file" class="my_file" name="" id="">
+            </div>
+            <h4 id="name">Basem</h4>
+        </div>
     
     <a href="index.html"><i class="fa-sharp fa-solid fa-house"></i><span>home</span></a>
     <a href="myappointment.html"><i class="fa-thin fa-solid fa-calendar-days"></i><span>appiontment</span></a>
@@ -51,7 +51,7 @@
       <div class="form">
         <div class="form_doctor">
           <p>Edit Doctor</p>
-          <p>Basem's Profile</p>
+          <p id="name_">Basem's Profile</p>
           <p>Profile Reg Date: 2017-01-07 09:43:35</p>
           <p>Profile Last Updation Date: 2017-01-07 09:43:35</p>
         </div>
@@ -118,6 +118,14 @@
       </div>
     </div>
   </div>
+  <script>
+        var imageElement = document.querySelector('.profile');
+        imageElement.style.backgroundImage = 'url("data:image/jpeg;base64,'  + JSON.parse(localStorage.userdata).Photograph + '")';
+        var nametag = document.getElementById('name');
+        nametag.textContent = JSON.parse(localStorage.userdata).Name;
+
+        document.getElementById('name_').textContent = nametag.textContent + "'s Profile"
+  </script>
 </body>
 
 </html>
